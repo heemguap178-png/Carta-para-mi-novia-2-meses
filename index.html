@@ -386,7 +386,9 @@ body{
 <body>
 
 <div class="estrellas" id="estrellas"></div>
-
+<audio id="cancion" loop>
+    <source src="cancion.mp3" type="audio/mpeg">
+</audio>
 <button class="musica" onclick="musica()">
     🎵 Música
 </button>
@@ -570,73 +572,30 @@ function corazones(){
     }
 }
 
+/* CANCIÓN */
 
-/* MÚSICA AMBIENTAL GENERADA */
+const cancion = document.getElementById("cancion");
 
-let audioContext;
-let osciladores=[];
-let musicaActiva=false;
+cancion.volume = 0.35;
 
 function iniciarMusica(){
 
-    if(musicaActiva)return;
+    cancion.play();
 
-    musicaActiva=true;
-
-    audioContext=
-        new (window.AudioContext || window.webkitAudioContext)();
-
-    const notas=[
-        261.63,
-        329.63,
-        392.00,
-        523.25
-    ];
-
-    notas.forEach((frecuencia,i)=>{
-
-        const osc=audioContext.createOscillator();
-
-        const gain=audioContext.createGain();
-
-        osc.type="sine";
-
-        osc.frequency.value=frecuencia;
-
-        gain.gain.value=.018;
-
-        osc.connect(gain);
-
-        gain.connect(audioContext.destination);
-
-        osc.start();
-
-        osciladores.push(osc);
-
-    });
 }
-
-
-/* BOTÓN DE MÚSICA */
 
 function musica(){
 
-    if(!audioContext){
+    if(cancion.paused){
 
-        iniciarMusica();
-        return;
-
-    }
-
-    if(audioContext.state==="running"){
-
-        audioContext.suspend();
+        cancion.play();
 
     }else{
 
-        audioContext.resume();
+        cancion.pause();
 
     }
+
 }
 
 </script>
